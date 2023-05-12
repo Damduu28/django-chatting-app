@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block content %}
+<main>
+    <div class="wrapper">
+        <div class="sub-wrapper-one">
+            <div class="chats-user">
+                <a href="{% url 'home' %}" class="close-chat">
+                    <img src="{% static 'images/chevron-left-icon.png' %}" alt="">
+                </a>
+                <div class="active-user-name">
+                    <span class="active--name">{{ request.user.get_user_name }}</span>
+                    <small>{{ request.user.status }}</small>
+                </div>
+                <div class="img-avatar">
+                    <img src="{{ request.user.get_avatar_url }}" class="avatar">
+                </div>
+            </div>
+        </div>
+        <div class="sub-wrapper-two">
+            <div class="chats">
+                {% for chat in chats %}
+                    {% if chat.sender == request.user %}
+                        <div class="outgoing chat-msg">
+                            <div class="details">
+                                <p>{{ chat.message }}</p>
+                            </div>
+                            <span class="chat--time timesince">{{ chat.created|timesince }}</span>
+                        </div>
+                    {% else %}
+                        <div class="incoming chat-msg">
+                            <div class="box">
+                                <img src="{{ chat.sender.get_avatar_url }}" alt="">
+                                <div class="details">
+                                    <p>{{ chat.message }}</p>
+                                </div>
+                            </div>
+                            <span class="chat--time timesince">{{ chat.created|timesince }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="chat--form">
+                <form action="" method="POST" class="msg--form">
+                    {% csrf_token %}
+                    <input type="text" name="message" placeholder="Type a message">
+                    <button type="submit">
+                        <img src="{% static 'images/telegram-plane-icon.png' %}" alt="">
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

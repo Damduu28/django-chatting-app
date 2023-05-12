@@ -1,0 +1,19 @@
+{% load static %}
+<div class="curent-user">
+    <img src="{{ request.user.get_avatar_url }}" alt="" class="user-avatar">
+    <div class="active-name">
+        <span class="name">{{ request.user.get_user_name }}</span>
+        <small>{{ request.user.status }}</small>
+    </div>
+    <div class="dropdown" data-dropdown>
+        <a href="#" class="logout" data-dropdown-btn>
+            <span data-dropdown-btn></span>
+            <span data-dropdown-btn></span>
+            <span data-dropdown-btn></span>
+        </a>
+        <div class="dropdown-content">
+            <a href="{% url 'update-profile' request.user.id %}" class="drop-item">Edit Profile</a>
+            <a href="{% url 'logout' %}" class="drop-item">Logout</a>
+        </div>
+    </div>
+</div>

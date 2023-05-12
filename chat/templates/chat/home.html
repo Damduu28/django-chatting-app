@@ -1,0 +1,105 @@
+{% extends 'index.html' %}
+
+{% load static %}
+{% block content %}
+<main>
+    <div class="wrapper">
+        <div class="sub-wrapper-one">
+            {% include 'navbar.html' %}
+            <div class="search--form">
+                <button type="submit">
+                    <img src="{% static 'images/search-icon1.png' %}" alt="">
+                </button>
+                <input type="text" name="" id="" placeholder="Enter a name to seach...">
+                <p class="page-title">Messages</p>
+            </div>
+        </div>
+        <div class="sub-wrapper-two">
+            <div class="tabs--content">
+                <div data-title="Messages" class="content active" id="animate">
+                    <div class="chats--item">
+                        {% for friend in all_friends %}
+                            <a href="{% url 'chat' friend.id %}" class="chat">
+                                <div class="img-avatar">
+                                    <img src="{{ friend.get_avatar_url }}" alt="" class="avatar">
+                                    <span class="active-dot"></span>
+                                </div>
+                                <div class="name-msg">
+                                    <span class="chat__username">{{ friend.get_user_name }}</span>
+                                    {% for chat in last_chat %}
+                                        {% if chat %}
+                                            {% if chat.sender == request.user and chat.receiver == friend or chat.sender == friend and chat.receiver == request.user %}
+                                                <p class="chats-msg">{{ chat.message }}</p>
+                                            {% endif %}
+                                        {% else%}
+                                            {% if chat.sender == request.user and chat.receiver == friend or chat.sender == friend and chat.receiver == request.user  %}
+                                                <p class="chats-msg">No availible message.</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div data-title="Friends request" class="content" id="animate">
+                    <div class="chats--item">
+                        {% for friend in friend_requests %}
+                            <a href="#" class="request-friend">
+                                <div class="request">
+                                    <div class="img-avatar">
+                                        <img src="{{ friend.from_user.get_avatar_url }}" alt="" class="avatar">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <span class="name chat__username">{{ friend.from_user.get_user_name }}</span>
+                                    <div class="confirm--cancel">
+                                        <button data-request="{{ friend.id }}" data-action="confirm" class="update-fiend">Confirm</button>
+                                        <button data-request="{{ friend.id }}" data-action="delete" class="delete-request update-fiend">Delete</button>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                        {% comment %} <div class="no-request">
+                            <p>You current have no friend request</p>
+                            <h3>Thank You</h3>
+                        </div> {% endcomment %}
+                    </div>
+                </div>
+                <div data-title="Find Friends" class="content" id="animate">
+                    <div class="friend--item">
+                        {% for user in new_users %}
+                            {% if not user.is_superuser and user != request.user and user not in all_friends %}
+                                <div href="#" class="friend">
+                                    <div class="img-avatar">
+                                        <img src="{{ user.get_avatar_url }}" alt="" class="avatar">
+                                        <span class="active-dot"></span>
+                                    </div>
+                                    <div>
+                                        <span class="name chat__username">{{ user.get_user_name }}</span>
+                                    </div>
+                                    <div class="request__btns">
+                                        <button data-action="cancel" data-user="{{user.id}}" class="cancel add-fiend">cancel request</button>
+                                        <button data-action="add" data-user="{{user.id}}" class="add-fiend">Add friend</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="tabs">
+                <a href="#" class="active">
+                    Chats
+                </a>
+                <a data-name="Your Friends" href="#">
+                    Friend Requests
+                </a>
+                <a href="#">
+                    Find Friends
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

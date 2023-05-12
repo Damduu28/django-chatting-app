@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<main>
+    <div class="wrapper">
+        <div class="sub-wrapper-one">
+            <h1 class="title">Profile Update</h1>
+        </div>
+        <div class="form-container">
+            {% if messages %}
+                <ul class="msg">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+                {% csrf_token %}
+                <div class="field-group">
+                    <i class="fas fa-user icons"></i>
+                    {{ form.name }}
+                </div>
+                <div class="field-group">
+                    <i class="fas fa-user icons"></i>
+                    {{ form.username }}
+                </div>
+                <div class="field-group">
+                    <i class="fa fa-envelope icons"></i>
+                    {{ form.email }}
+                </div>
+                <div class="field-group file">
+                    <label for="">Avatar</label>
+                    {{ form.avatar }}
+                </div>
+                <button type="submit" class="create-account-btn">Update Profile</button>
+            </form>
+            
+        </div>
+    </div>
+</main>
+{% endblock %}

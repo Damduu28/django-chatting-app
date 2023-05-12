@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<main>
+    <div class="wrapper">
+        <div class="sub-wrapper-one">
+            <h1 class="title">RealTime Chat App</h1>
+        </div>
+        <div class="form-container">
+            {% if messages %}
+                <ul class="msg">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if page == "login" %}
+                <form action="" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="field-group">
+                        <i class="fa fa-envelope icons"></i>
+                        <input type="email" name="email" placeholder="Enter Email">
+                    </div>
+                    <div class="field-group passw">
+                        <i class="fas fa-lock icons"></i>
+                        <input type="password" name="password" placeholder="Enter Password">
+                        <i class="fas fa-eye" id="eye-icon"></i>
+                    </div>
+                    <div class="field__group forget">
+                        <label for="">
+                            <input type="checkbox" name="remember_me">Remember me
+                        </label>
+                        <a href="#" class="forget__password">Forgot password</a>
+                    </div>
+                    <button type="submit" class="create-account-btn">LogIn</button>
+                </form>
+                <p class="already">Don't have account? <a href="{% url 'register' %}">SignUp</a></p>
+            {% else %}
+                <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="field-group">
+                        <i class="fas fa-user icons"></i>
+                        {{ form.username }}
+                    </div>
+                    <div class="field-group">
+                        <i class="fa fa-envelope icons"></i>
+                        {{ form.email }}
+                    </div>
+                    <div class="field-group">
+                        <i class="fas fa-lock icons"></i>
+                        {{ form.password1 }}
+                        <i class="fas fa-eye" id="eye-icon"></i>
+                    </div>
+                    <div class="field-group">
+                        <i class="fas fa-lock icons"></i>
+                        {{ form.password2 }}
+                        <i class="fas fa-eye" id="eye-icon"></i>
+                    </div>
+                    <button type="submit" class="create-account-btn">SignUp</button>
+                </form>
+                <p class="already">Already have account? <a href="{% url 'login' %}">LogIn</a></p>
+            
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}
